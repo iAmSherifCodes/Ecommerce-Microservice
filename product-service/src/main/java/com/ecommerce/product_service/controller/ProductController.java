@@ -19,8 +19,12 @@ public class ProductController {
     @Autowired
     private IService productService;
     @GetMapping("/{id}")
-    public ResponseEntity<ProductResponse> getProduct(@PathVariable String id) throws ProductNotFoundException {
-        return new ResponseEntity<>(productService.getProduct(id), HttpStatus.OK);
+    public ResponseEntity<ProductResponse> getProduct(@PathVariable String id) {
+        try {
+            return new ResponseEntity<>(productService.getProduct(id), HttpStatus.OK);
+        } catch (ProductNotFoundException e) {
+            throw new RuntimeException(e);
+        }
     };
 
     @GetMapping("/")
