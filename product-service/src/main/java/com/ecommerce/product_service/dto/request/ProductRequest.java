@@ -1,12 +1,15 @@
 package com.ecommerce.product_service.dto.request;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
-@Getter @Setter
+@Getter @Setter @AllArgsConstructor
 public class ProductRequest {
     private String name;
-    private String description;
     private BigDecimal price;
+    private String description;
+
 }
