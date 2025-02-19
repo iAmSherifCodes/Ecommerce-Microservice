@@ -1,28 +1,40 @@
 package com.ecommerce.product_service.repository;
 
+
 import com.ecommerce.product_service.Exception.ProductNotFoundException;
 import com.ecommerce.product_service.dto.reponse.ProductResponse;
 import com.ecommerce.product_service.dto.request.ProductRequest;
 import com.ecommerce.product_service.dto.request.UpdateProductRequest;
 import com.ecommerce.product_service.model.Product;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
+import java.util.stream.Collectors;
 
-@Repository
+@Repository @RequiredArgsConstructor
 public class ProductRepository implements IRepository {
     private final Map<String, Product> repository = new HashMap<>();
 
     @Override
     public List<ProductResponse> findAllProducts() {
-        Collection<Product> products =  repository.values();
-        products.forEach(this::buildProductResponse);
-        return null;
+        return buildListOfProductResponse(List.copyOf(repository.values()));
     }
+
+    private List<ProductResponse> buildListOfProductResponse(Collection<Product> products) {
+        return products.stream()
+                .map(product -> ProductResponse.builder()
+                        .id(product.getId())
+                        .name(product.getName())
+                        .price(product.getPrice())
+                        .description(product.getDescription())
+                        .build()
+                )
+                .collect(Collectors.toList());
+    }
+
+
+
 
     private ProductResponse buildProductResponse(Product product) {
        return ProductResponse.builder().
@@ -54,7 +66,7 @@ public class ProductRepository implements IRepository {
 
     private Product validateProductId(String id) throws ProductNotFoundException {
         if (!repository.containsKey(id)) {
-            throw new ProductNotFoundException("Product not found");
+            throw new ProductNotFoundException("Product with ID " + id + "is Not Found");
         }
         return repository.get(id);
     }
@@ -68,9 +80,7 @@ public class ProductRepository implements IRepository {
 
     @Override
     public String deleteProduct(String id) throws ProductNotFoundException {
-        if (!repository.containsKey(id)) {
-            throw new ProductNotFoundException("Product not found");
-        }
+        validateProductId(id);
         repository.remove(id);
         return "Product deleted successfully";
     }
