@@ -67,19 +67,23 @@ POST (localhost:8084/product/add)
     'Content-Type: application/json'
 
 ### Sample Request Body
+```json
     {
       "name": "Samsung A21",
       "description" : "Samsung A21 series. SnapDragon series",
       "price": 30000
     }
+```
 
 ### Sample Response Body
+```json
     {
       "id":"545df54d-6bd6-4847-90d2-157796b40e4f",
       "name":"Samsung A21",
       "description":"Samsung A21 series. SnapDragon series",
       "price":30000
     }
+```
 
 ## Get Product
 - This endpoint gets in a Product by its Id.
@@ -90,12 +94,14 @@ GET (localhost:8084/product/{ID})
     'Content-Type: application/json'
 
 ### Sample Response Body
+```json
     {
         "id": "545df54d-6bd6-4847-90d2-157796b40e4f",
         "name": "Samsung A21",
         "description": "Samsung A21 series. SnapDragon series",
         "price": 30000
     }
+```
 
 
 ## Get All Products
@@ -107,6 +113,7 @@ GET (localhost:8084/product/{ID})
 
 
 ### Sample Response Body
+```json
     [
         {
             "id": "545df54d-6bd6-4847-90d2-157796b40e4f",
@@ -115,6 +122,49 @@ GET (localhost:8084/product/{ID})
             "price": 30000
         }
     ]
+```
+
+## Update Product
+- This endpoint updates an existing product.
+-
+PUT (localhost:8084/product/update)
+
+
+### Sample Request Header
+    'Content-Type: application/json'
+
+### Sample Request Body
+```json
+    {
+      "id": "5a3db4f5-c5f5-4509-abb5-aa2107bf0ad0",
+      "name": "Samsung A21",
+      "description": "Samsung A21 series. SnapDragon series",
+      "price": 35000
+    }
+```
+
+### Sample Response Body
+```json
+    {
+      "id": "5a3db4f5-c5f5-4509-abb5-aa2107bf0ad0",
+      "name": "Samsung A21",
+      "description": "Samsung A21 series. SnapDragon series",
+      "price": 35000
+    }
+```
+
+## Delete Product
+- This endpoint deletes a product by its ID.
+-
+POST (localhost:8084/product/id)
+
+
+### Sample Request Header
+    'Content-Type: application/json'
+
+
+### Sample Response Body
+     Product deleted successfully
 
 
 # ORDER API
@@ -127,14 +177,17 @@ GET (localhost:8084/product/{ID})
     'Content-Type: application/json'
 
 ### Sample Request Body
+```json
     {
         "productId": "545df54d-6bd6-4847-90d2-157796b40e4f",
         "quantity": 2,
         "totalPrice": 60000,
         "status": "PENDING"
     }
+```
 
 ### Sample Response Body
+```json
     {
         "id": "f01a5b3f-72f7-49eb-8974-1a1640990dfd",
         "productId": "545df54d-6bd6-4847-90d2-157796b40e4f",
@@ -145,6 +198,7 @@ GET (localhost:8084/product/{ID})
         "productDescription": "Samsung A21 series. SnapDragon series",
         "productPrice": 30000
     }
+```
 
 ## Get Orders
 - This endpoint retrieves orders.
@@ -154,6 +208,7 @@ GET (localhost:8084/product/{ID})
     'Content-Type: application/json'
 
 ### Sample Response Body
+```json
     [
         {
             "id": "f01a5b3f-72f7-49eb-8974-1a1640990dfd",
@@ -166,135 +221,6 @@ GET (localhost:8084/product/{ID})
             "productPrice": 30000
         }
     ]
-
-## Comment Post
-- This function allows users on the platform to comment on a post on the platform.
--
-POST (https://{hostname}/posts/comment)
-
-### Sample Request Header
-    'Content-Type: application/json'
-    'Authorization: Bearer  <Bearer Token>'
-
-### Sample Request Body
-    {
-    "postId": "661817bdca2b2ac2493316e1",
-    "userId": "661816dbca2b2ac2493316d5",
-    "comment": "Like this post!"
-    }
-
-### Sample Response Body
-    {
-        "success": true,
-        "data": {
-            "userId": "661816dbca2b2ac2493316d5",
-            "description": "Love with your brain",
-            "likes": [
-                {
-                    "username": "you"
-                }
-            ],
-            "comments": [
-                {
-                    "comment": "Like this post!",
-                    "author": "john doe"
-                }
-            ],
-            "createdAt": "2024-04-11T17:02:53.492Z",
-            "updatedAt": "2024-04-11T17:12:17.133Z",
-            "id": "661817bdca2b2ac2493316e1"
-        }
-    }
-
-
-## View Number Of Likes
-- This function allows users on the platform to view the number of likes on a post on the platform.
--
-POST (https://{hostname}/posts/viewNumberOfLikes)
-
-### Sample Request Header
-    'Content-Type: application/json'
-    'Authorization: Bearer  <Bearer Token>'
-
-### Sample Request Body
-    {
-    "postId": "661817bdca2b2ac2493316e1",
-    }
-
-### Sample Response Body
-    {
-    "success": true,
-    "data": 1
-    }
-
-
-## View Comment
-- This function allows users on the platform to view comment of a post on the platform.
--
-POST (https://{hostname}/posts/viewComments)
-
-### Sample Request Header
-    'Content-Type: application/json'
-    'Authorization: Bearer  <Bearer Token>'
-
-### Sample Request Body
-    {
-    "postId": "661817bdca2b2ac2493316e1",
-    }
-
-### Sample Response Body
-    {
-        "success": true,
-        "data": {
-            "results": [
-                {
-                    "comment": "Like this post!",
-                    "author": "john doe"
-                }
-            ]
-        }
-    }
-
-
-
-### Fetch Product by ID
-
-#### Request:
-
-```sh
-curl -X GET http://localhost:8082/products/{id}
-```
-
-#### Response:
-
-```json
-{
-  "id": "abc123",
-  "name": "Laptop",
-  "price": 1200.00,
-  "quantity": 10
-}
-```
-
-### Create an Order
-
-#### Request:
-
-```sh
-curl -X POST http://localhost:8081/orders \
-  -H "Content-Type: application/json" \
-  -d '{"productId": "abc123", "quantity": 2}'
-```
-
-#### Response:
-
-```json
-{
-  "orderId": "xyz789",
-  "productId": "abc123",
-  "quantity": 2,
-  "status": "CONFIRMED"
-}
 ```
 
 
