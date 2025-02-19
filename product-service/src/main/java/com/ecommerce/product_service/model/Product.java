@@ -9,13 +9,8 @@ import java.math.BigDecimal;
 
 @Getter @Setter @Builder
 public class Product {
-    private String id; // = generateId();
+    private String id;
     private String name;
     private String description;
     private BigDecimal price;
-
-//    private String generateId(){
-//        return UUID.randomUUID().toString();
-//    }
-
 }
