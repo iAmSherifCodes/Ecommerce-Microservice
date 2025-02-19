@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -37,7 +38,7 @@ public class OrderService implements IService {
 
     private ProductDTO buildProductDTO(ResponseEntity<ProductResponse> product){
          ProductDTO newProductDto = new ProductDTO();
-         newProductDto.setId(product.getBody().getId());
+         newProductDto.setId(Objects.requireNonNull(product.getBody()).getId());
          newProductDto.setName(product.getBody().getName());
          newProductDto.setPrice(product.getBody().getPrice());
          newProductDto.setDescription(product.getBody().getDescription());
