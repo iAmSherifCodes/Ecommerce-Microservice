@@ -55,12 +55,12 @@ This documentation provides an overview of the microservices architecture, featu
 
 #### There are two controllers User and Post
 
-# USER API
+# PRODUCT SERVICE
 
-## Create User
-- This function creates new users in the platform.
+## Create Product
+- This endpoint creates a new product.
 -
-POST (https://{hostname}/users/register)
+POST (localhost:8084/product/add)
 
 
 ### Sample Request Header
@@ -68,148 +68,104 @@ POST (https://{hostname}/users/register)
 
 ### Sample Request Body
     {
-        "username": "John Doe",
-        "password": "myP@ssw0rd"
+      "name": "Samsung A21",
+      "description" : "Samsung A21 series. SnapDragon series",
+      "price": 30000
     }
 
 ### Sample Response Body
     {
-    "success": true,
-    "data": {
-        "username": "idris doe",
-        "password": "$2b$10$GdZ6nFcNFeJQfOb0CrY7fuyqS6Lw4UBYdzKbs8SGjCrRFGb0vJ0tm",
-        "salt": "$2b$10$GdZ6nFcNFeJQfOb0CrY7fu",
-        "followers": [],
-        "notifications": [],
-        "createdAt": "2024-04-11T17:42:52.758Z",
-        "updatedAt": "2024-04-11T17:42:52.758Z",
-        "id": "6618211c54b573b9baea8cc4"
-    }
+      "id":"545df54d-6bd6-4847-90d2-157796b40e4f",
+      "name":"Samsung A21",
+      "description":"Samsung A21 series. SnapDragon series",
+      "price":30000
     }
 
-## Login User
-- This function logs users in the platform.
+## Get Product
+- This endpoint gets in a Product by its Id.
 -
-POST (https://{hostname}/users/login)
+GET (localhost:8084/product/{ID})
 
 ### Sample Request Header
     'Content-Type: application/json'
 
-### Sample Request Body
-    {
-        "username": "John Doe",
-        "password": "myP@ssw0rd"
-    }
-
 ### Sample Response Body
     {
-        "success": true,
-        "data": {
-            "username": "John Doe",
-            "salt": "$2b$10$SZAP/znq82HNOH15C6Ahi.",
-            "followers": [],
-            "createdAt": "2024-04-11T09:32:49.350Z",
-            "updatedAt": "2024-04-11T09:32:49.350Z",
-            "id": "6617ae4125e9421cf1a316ba",
-            "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJvcWVlYiIsImlkIjoiNjYxN2FlNDEyNWU5NDIxY2YxYTMxNmJhIiwiaWF0IjoxNzEyODI5NzYzLCJleHAiOjE3MTI5MTYxNjN9.TFBZ9Ofwalbv9ICtvKCv6Gwr-HL1Ec83C8tOxcOFvQw"
+        "id": "545df54d-6bd6-4847-90d2-157796b40e4f",
+        "name": "Samsung A21",
+        "description": "Samsung A21 series. SnapDragon series",
+        "price": 30000
+    }
+
+
+## Get All Products
+- This endpoint retrieves products.
+  POST (localhost:8084/product/)
+
+### Sample Request Header
+    'Content-Type: application/json'
+
+
+### Sample Response Body
+    [
+        {
+            "id": "545df54d-6bd6-4847-90d2-157796b40e4f",
+            "name": "Samsung A21",
+            "description": "Samsung A21 series. SnapDragon series",
+            "price": 30000
         }
-    }
+    ]
 
 
-## Follow User
-- This function allows users to follow other users on the platform.
-  POST (https://{hostname}/users/follow)
+# ORDER API
+
+## Create Order
+- This endpoint creates a new order.
+  POST (localhost:8084/order/add)
 
 ### Sample Request Header
     'Content-Type: application/json'
-    'Authorization: Bearer  <Bearer Token>'
 
 ### Sample Request Body
     {
-        "userId": "661788b14967229067b49cc8",
-        "followerId": "6617889f4967229067b49cc2"
+        "productId": "545df54d-6bd6-4847-90d2-157796b40e4f",
+        "quantity": 2,
+        "totalPrice": 60000,
+        "status": "PENDING"
     }
 
 ### Sample Response Body
     {
-        "success": true,
-        "data": {
-            "username": "john doe",
-            "password": "$2b$10$oi6dVqO8eK7e.79DiqY1X.woFhsAR1c2IqSMsINcHxr2mRP4/1fYO",
-            "salt": "$2b$10$oi6dVqO8eK7e.79DiqY1X.",
-            "followers": [
-                {
-                    "username": "janet doe"
-                }
-            ],
-            "createdAt": "2024-04-11T16:59:07.187Z",
-            "updatedAt": "2024-04-11T16:59:54.135Z",
-            "id": "661816dbca2b2ac2493316d5"
+        "id": "f01a5b3f-72f7-49eb-8974-1a1640990dfd",
+        "productId": "545df54d-6bd6-4847-90d2-157796b40e4f",
+        "quantity": 2,
+        "totalPrice": 60000,
+        "status": "PENDING",
+        "productName": "Samsung A21",
+        "productDescription": "Samsung A21 series. SnapDragon series",
+        "productPrice": 30000
+    }
+
+## Get Orders
+- This endpoint retrieves orders.
+  POST (localhost:8084/order/)
+
+### Sample Request Header
+    'Content-Type: application/json'
+
+### Sample Response Body
+    [
+        {
+            "id": "f01a5b3f-72f7-49eb-8974-1a1640990dfd",
+            "productId": "545df54d-6bd6-4847-90d2-157796b40e4f",
+            "quantity": 2,
+            "totalPrice": 60000,
+            "status": "PENDING",
+            "productName": "Samsung A21",
+            "productDescription": "Samsung A21 series. SnapDragon series",
+            "productPrice": 30000
         }
-    }
-
-# POST API
-
-AUTH
-
-## Create Post
-- This function creates a new post in the platform.
-  POST (https://{hostname}/posts/post)
-
-### Sample Request Header
-    'Content-Type: application/json'
-    'Authorization: Bearer  <Bearer Token>'
-### Sample Request Body
-    {
-        "userId": "661816dbca2b2ac2493316d5",
-        "description": "Love with your brain"
-    }
-
-### Sample Response Body
-    {
-        "success": true,
-        "data": {
-            "userId": "661816dbca2b2ac2493316d5",
-            "description": "Love with your brain",
-            "likes": [],
-            "comments": [],
-            "createdAt": "2024-04-11T17:02:53.492Z",
-            "updatedAt": "2024-04-11T17:02:53.492Z",
-            "id": "661817bdca2b2ac2493316e1"
-        }
-    }
-
-## Like Post
-- This function allows a user to like a post on the platform.
-  POST (https://{hostname}/post/like)
-
-### Sample Request Header
-    'Content-Type: application/json'
-    'Authorization: Bearer  <Bearer Token>'
-
-### Sample Request Body
-    {
-    "postId": "661817bdca2b2ac2493316e1",
-    "userId": "661816dbca2b2ac2493316d5"
-    }
-
-### Sample Response Body
-    {
-       "success": true,
-       "data": {
-           "userId": "661816dbca2b2ac2493316d5",
-           "description": "Love with your brain",
-           "likes": [
-               {
-                   "username": "you"
-               }
-           ],
-           "comments": [],
-           "createdAt": "2024-04-11T17:02:53.492Z",
-           "updatedAt": "2024-04-11T17:10:02.582Z",
-           "id": "661817bdca2b2ac2493316e1"
-       }
-    }
+    ]
 
 ## Comment Post
 - This function allows users on the platform to comment on a post on the platform.
