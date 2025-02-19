@@ -74,8 +74,12 @@ public class ProductRepository implements IRepository {
     public ProductResponse updateProduct(UpdateProductRequest productRequest) throws ProductNotFoundException {
         Product vProduct = validateProductId(productRequest.getId());
         String id = vProduct.getId();
-        Product savedProduct = repository.compute(id, (k, product) -> vProduct);
-        return buildProductResponse(savedProduct);
+        vProduct.setName(productRequest.getName());
+        vProduct.setPrice(productRequest.getPrice());
+        vProduct.setDescription(productRequest.getDescription());
+
+        repository.put(id, vProduct);
+        return buildProductResponse(vProduct);
     }
 
     @Override
